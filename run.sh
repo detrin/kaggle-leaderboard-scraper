@@ -13,3 +13,8 @@ source env/bin/activate
 ls data | xargs -I{} python upload.py data/{}
 rm -rf data
 rm tables.txt
+
+rm -rf downloaded
+mkdir downloaded
+python download.py
+rm -rf downloaded

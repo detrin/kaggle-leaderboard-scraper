@@ -28,3 +28,4 @@ with open('tables.txt', 'w') as file:
             file.write(obj['Key'] + '\n')  
   
 s3.upload_file('tables.txt', bucket_name, 'tables.txt')  
+
