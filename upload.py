@@ -19,13 +19,20 @@ print(f'Uploading {filename} to {bucket_name}...')
 s3.upload_file(filename, bucket_name, basename)
 
 print(f'List of files in {bucket_name}:')
-files = s3.list_objects(Bucket=bucket_name)  
-print(files)
 
+file_cnt = 0
 with open('tables.txt', 'w') as file:    
-    for obj in files['Contents']:  
-        if obj['Key'] != 'tables.txt':
-            file.write(obj['Key'] + '\n')  
-  
+    paginator = s3.get_paginator('list_objects_v2')
+    pages = paginator.paginate(Bucket=bucket_name)
+
+    for page in pages:
+        for obj in page['Contents']:
+            if obj['Key'] != 'tables.txt':
+                file.write(obj['Key'] + '\n') 
+                file_cnt += 1 
+
+print(f'{file_cnt} files uploaded')
+
+print('Uploading tables.txt...')
 s3.upload_file('tables.txt', bucket_name, 'tables.txt')  
 
